@@ -30,14 +30,14 @@ export default function ResourceBooking() {
 
   // Selected state
   const [selectedAssetId, setSelectedAssetId] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-CA"));
 
   // Loading & error states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Form State: New Booking
-  const [bookingDate, setBookingDate] = useState(new Date().toISOString().split("T")[0]);
+  const [bookingDate, setBookingDate] = useState(new Date().toLocaleDateString("en-CA"));
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
   const [purpose, setPurpose] = useState("");
@@ -103,8 +103,8 @@ export default function ResourceBooking() {
     }
 
     // Build ISO timestamps for time_range bounds [)
-    const startIso = `${bookingDate}T${startTime}:00Z`;
-    const endIso = `${bookingDate}T${endTime}:00Z`;
+    const startIso = new Date(bookingDate + "T" + startTime).toISOString();
+    const endIso = new Date(bookingDate + "T" + endTime).toISOString();
 
     if (new Date(startIso) >= new Date(endIso)) {
       setBookingFeedback({ type: "error", message: "End time must be after start time." });
